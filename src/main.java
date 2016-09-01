@@ -4,8 +4,48 @@ public class main {
 
 	public static void main(String[] args) {
 
+		Content<String> c1 = new Content<String>(1, "Eins");
+		
+		Content<String> c2 = new Content<String>(2, "Zwei");
+		
+		Content<String> c3 = new Content<String>(3, "Drei");
+		
+		Content<String> c4 = new Content<String>(4, "Vier");
+		
+		Content<String> c5 = new Content<String>(5, "Fuenf");
+		
+		Content<String> c6 = new Content<String>(6, "Sechs");
+		
+		Node<Content<String>> n = new Node<Content<String>>(c1);
+		
+		n.insert(c1, c2);
+		n.insert(c2, c3);
+		
+		n.insert(c1, c5);
+		n.insert(c1, c4);
+		
+		n.insert(c2, c6);
+		
+		int[] res  = n.walk();
+		
+		System.out.println(res[0]+ ", " + res[1]+ ", " + res[2]);
+		
+		n.delete(c2);
+		
+		res = n.walk();
+		
+		System.out.println(res[0]+ ", " + res[1]+ ", " + res[2]);
+		
+		Content<String> n_c1 = new Content<String>(1, "Eins");
+		
+		Node<Content<String>> n1 = n.find(c2);
+		
+		res = n1.walk();
+		
+		System.out.println(res[0]+ ", " + res[1]+ ", " + res[2]);
+		
 		//initialise map;
-		int rows = 500;
+		/*int rows = 500;
 		int cols = 500;
 		double[][] map = new double[rows][cols];
 
@@ -44,7 +84,7 @@ public class main {
 				//System.out.print(bnmap[i][j]+"\t");
 			}
 			//System.out.println("");
-		}
+		}*/
 
 		//for(int i = 0; i < rows; i++){
 		//	for(int j = 0; j < cols; j++){
