@@ -19,7 +19,7 @@ public class Content<T> {
 	}*/
 	
 	public String toString(){
-		return content.toString();
+		return Integer.toString(id);
 	}
 
 	@Override

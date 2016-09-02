@@ -16,9 +16,11 @@ public class main {
 		
 		Content<String> c6 = new Content<String>(6, "Sechs");
 		
+		Content<String> c7 = new Content<String>(7, "Sieben");
+		
 		Node<Content<String>> n = new Node<Content<String>>(c1);
 		
-		n.insert(c1, c2);
+		/*n.insert(c1, c2);
 		n.insert(c2, c3);
 		
 		n.insert(c1, c5);
@@ -26,12 +28,43 @@ public class main {
 		
 		n.insert(c2, c6);
 		
+		n.insert(c3, c7);*/
+
+		n.insert(c1, c2);
+		n.insert(c2, c3);
+		
+		n.insert(c3, c4);
+		n.insert(c4, c5);
+		
+		n.insert(c5, c6);
+		
+		n.insert(c6, c7);
+
+		n.insert(c3, c6);
+		
+		n.insert((Content<String>)n.getContent(), c7);
+		
 		int[] res  = n.walk();
 		
-		System.out.println(res[0]+ ", " + res[1]+ ", " + res[2]);
+		Node<Content<String>> n1 = n.find(c2);
+		res = n1.walk();
 		
-		n.delete(c2);
+		n.walk();
 		
+		n.draw("output");
+		
+		n.delete(c5);
+		
+		n.draw("output2");
+		
+		int[] points_x = {0, 1, 2, 3};
+		int[] points_y = {0, 1, 2, 3};
+		
+		JFrontier f = new JFrontier(1, points_x, points_y, 1);
+		
+		System.out.println(f.toString());
+		
+		/*
 		res = n.walk();
 		
 		System.out.println(res[0]+ ", " + res[1]+ ", " + res[2]);
@@ -44,6 +77,9 @@ public class main {
 		
 		System.out.println(res[0]+ ", " + res[1]+ ", " + res[2]);
 		
+		n.draw("output.png");
+		
+		n1.draw("output2.png");*/
 		//initialise map;
 		/*int rows = 500;
 		int cols = 500;
