@@ -23,6 +23,9 @@ public class Node<T> {
 	private final int NODE_SIZE_X = 20;
 	private final int NODE_SIZE_Y = 20;
 	
+	private int x;
+	private int y;
+	
 	public Node(T content){
 		parent = null;
 		children = new ArrayList<Node<T>>();
@@ -101,6 +104,9 @@ public class Node<T> {
 		
 		while(!s.isEmpty()){
 			Node<T> item = s.pop();
+			String a = item.content.toString();
+			String b = content.toString();
+			System.out.println(a + " compared to "+ b);
 			if(item.content.equals(content)){
 				return item;
 			}
@@ -133,7 +139,7 @@ public class Node<T> {
 	public void draw(String filename){
 		int[] initial_walk = this.walk();
 		int width = initial_walk[0] * NODE_SIZE_X; //leaves
-		int height = initial_walk[2] * NODE_SIZE_Y; //height
+		int height = initial_walk[2] * NODE_SIZE_Y *2; //height
 		
 		int col = 0;
 		int row = 0;
@@ -156,17 +162,24 @@ public class Node<T> {
 			
 			if(item.rank != prev_rank){
 				col = 0;
-				row++;
+				row= row + 2;
 			}
 			
 			prev_rank = item.rank;
 			
-			g.drawOval(col + (width/2-NODE_SIZE_X/2), NODE_SIZE_Y*row, NODE_SIZE_X, NODE_SIZE_Y);
+			item.x = col + (width/2-NODE_SIZE_X/2);
+			item.y = NODE_SIZE_Y*row;
+			
+			g.drawOval(item.x, item.y, NODE_SIZE_X, NODE_SIZE_Y);
 			
 			FontMetrics metrics = g.getFontMetrics(font);
 			int w = metrics.stringWidth(item.content.toString())/2;
 			int h = metrics.getHeight()/2;
 			g.drawString(item.content.toString(), col + width/2-w, NODE_SIZE_Y*row-h+metrics.getAscent()+10);
+			
+			if(item.parent !=  null){
+				g.drawLine(item.x+NODE_SIZE_X/2, item.y, item.parent.x+NODE_SIZE_X/2, item.parent.y+NODE_SIZE_Y);
+			}
 			
 			col += width;
 			

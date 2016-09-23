@@ -1,6 +1,7 @@
+import java.util.Arrays;
 
 public class JFrontier {
-	
+
 	public int id;
 	
 	public int[] points_x;
@@ -62,6 +63,53 @@ public class JFrontier {
 	
 	@Override
 	public String toString(){
-		return id+", mean("+mean_x+"/"+mean_y+"), center("+center_x+"/"+center_y+")";
+		return id+"";
+		//return id+", mean("+mean_x+"/"+mean_y+"), center("+center_x+"/"+center_y+")";
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + center_x;
+		result = prime * result + center_y;
+		result = prime * result + color;
+		result = prime * result + id;
+		long temp;
+		temp = Double.doubleToLongBits(mean_x);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(mean_y);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + Arrays.hashCode(points_x);
+		result = prime * result + Arrays.hashCode(points_y);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		JFrontier other = (JFrontier) obj;
+		if (center_x != other.center_x)
+			return false;
+		if (center_y != other.center_y)
+			return false;
+		if (color != other.color)
+			return false;
+		if (id != other.id)
+			return false;
+		if (Double.doubleToLongBits(mean_x) != Double.doubleToLongBits(other.mean_x))
+			return false;
+		if (Double.doubleToLongBits(mean_y) != Double.doubleToLongBits(other.mean_y))
+			return false;
+		if (!Arrays.equals(points_x, other.points_x))
+			return false;
+		if (!Arrays.equals(points_y, other.points_y))
+			return false;
+		return true;
 	}
 }
