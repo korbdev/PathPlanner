@@ -87,8 +87,10 @@ public class JFrontier {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj){
+			System.out.println("Same object");
 			return true;
+		}
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
@@ -110,6 +112,7 @@ public class JFrontier {
 			return false;
 		if (!Arrays.equals(points_y, other.points_y))
 			return false;
+		System.out.println("Same data");
 		return true;
 	}
 }

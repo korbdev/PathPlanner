@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.math.*;
 public class main {
@@ -60,10 +61,96 @@ public class main {
 		int[] points_x = {0, 1, 2, 3};
 		int[] points_y = {0, 1, 2, 3};
 		
-		JFrontier f = new JFrontier(1, points_x, points_y, 1);
+		JFrontier f1 = new JFrontier(1, points_x, points_y, 1);
+		JFrontier f2 = new JFrontier(2, points_x, points_y, 2);
+		JFrontier f3 = new JFrontier(3, points_x, points_y, 3);
+		JFrontier f4 = new JFrontier(4, points_x, points_y, 4);
+		JFrontier f5 = new JFrontier(5, points_x, points_y, 5);
+		JFrontier f6 = new JFrontier(6, points_x, points_y, 6);
+		JFrontier f7 = new JFrontier(7, points_x, points_y, 7);
+		JFrontier f8 = new JFrontier(8, points_x, points_y, 8);
+		JFrontier f9 = new JFrontier(9, points_x, points_y, 9);
+		JFrontier f10 = new JFrontier(10, points_x, points_y, 10);
+		JFrontier f11 = new JFrontier(11, points_x, points_y, 11);
+		JFrontier f12 = new JFrontier(12, points_x, points_y, 12);
+		JFrontier f13 = new JFrontier(13, points_x, points_y, 13);
+		JFrontier f14 = new JFrontier(14, points_x, points_y, 14);
+		JFrontier f15 = new JFrontier(15, points_x, points_y, 15);
+		JFrontier f16 = new JFrontier(16, points_x, points_y, 16);
+		JFrontier f17 = new JFrontier(17, points_x, points_y, 17);
+		JFrontier f18 = new JFrontier(18, points_x, points_y, 18);
+		JFrontier f19 = new JFrontier(19, points_x, points_y, 19);
+		JFrontier f20 = new JFrontier(20, points_x, points_y, 20);
+		JFrontier f21 = new JFrontier(21, points_x, points_y, 21);
+		System.out.println(f1.toString());
 		
-		System.out.println(f.toString());
+		FrontierNode fn1 = new FrontierNode(f1);
+		FrontierNode fn2 = new FrontierNode(f2);
+		FrontierNode fn3 = new FrontierNode(f3);
+		FrontierNode fn4 = new FrontierNode(f4);
+		FrontierNode fn5 = new FrontierNode(f5);
+		FrontierNode fn6 = new FrontierNode(f6);
+		FrontierNode fn7 = new FrontierNode(f7);
+		FrontierNode fn8 = new FrontierNode(f8);
+		FrontierNode fn9 = new FrontierNode(f9);
+		FrontierNode fn10 = new FrontierNode(f10);
+		FrontierNode fn11 = new FrontierNode(f11);
+		FrontierNode fn12 = new FrontierNode(f12);
+		FrontierNode fn13 = new FrontierNode(f13);
+		FrontierNode fn14 = new FrontierNode(f14);
+		FrontierNode fn15 = new FrontierNode(f15);
+		FrontierNode fn16 = new FrontierNode(f16);
+		FrontierNode fn17 = new FrontierNode(f17);
+		FrontierNode fn18 = new FrontierNode(f18);
+		FrontierNode fn19 = new FrontierNode(f19);
+		FrontierNode fn20 = new FrontierNode(f20);
+		FrontierNode fn21 = new FrontierNode(f21);
 		
+		/*fn1.insert(f1, f3);
+		fn1.insert(f1, f2);
+		fn1.insert(f1, f10);
+		fn1.insert(f1, f11);
+		fn1.insert(f11, f4);
+		fn1.insert(f4, f5);
+		fn1.insert(f5, f6);
+		fn1.insert(f6, f7);
+		fn1.insert(f6, f8);
+		fn1.insert(f6, f9);
+		fn1.insert(f10, f12);
+		fn1.insert(f10, f13);
+		fn1.insert(f10, f14);
+		fn1.insert(f10, f15);*/
+		
+		fn1.insert(f1, f2);
+		fn1.insert(f1, f3);
+		fn1.insert(f1, f4);
+		
+		fn1.insert(f3, f5);
+		fn1.insert(f3, f6);
+		
+		fn1.insert(f4, f7);
+		fn1.insert(f4, f8);
+		
+		fn1.insert(f5, f9);
+		fn1.insert(f5, f10);
+		
+		fn1.insert(f7, f11);
+		
+		//fn1.insert(f1, f3);
+		//fn1.insert(f1, f4);
+		
+		fn1.draw("fn");
+		FrontierNode[] leafs = fn1.getLeafsAsArray();
+		System.out.println("Leafs: "+leafs.length);
+		
+		fn1.delete(leafs[0].getContent());
+		
+		//fn1.mark(f4);
+		
+		//leafs = fn1.getLeafsAsArray();
+		//System.out.println("Leafs: "+leafs.length);
+		
+		//fn1.draw("fn2");
 		/*
 		res = n.walk();
 		

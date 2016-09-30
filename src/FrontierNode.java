@@ -1,9 +1,25 @@
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 
 public class FrontierNode extends Node<JFrontier>{
+	
 	public FrontierNode(JFrontier frontier){
 		super(frontier);
+	}
+	
+	public FrontierNode(Node<JFrontier> other){
+		super(other);
+	}
+	
+	public FrontierNode[] getLeafsAsArray(){
+		ArrayList<Node<JFrontier>> leafs = this.getLeafs();
+		FrontierNode[] leafsArray = new FrontierNode[leafs.size()];
+		for(int i = 0; i < leafs.size(); i++){
+			leafsArray[i] = new FrontierNode(leafs.get(i));
+			System.out.println("arr height"+leafsArray[i].getRank());
+		}
+		return leafsArray;
 	}
 	
 	public Node<JFrontier> findClosestNode(JFrontier content){
@@ -19,8 +35,9 @@ public class FrontierNode extends Node<JFrontier>{
 			JFrontier f = item.getContent();
 			
 			double temp_distance = JFrontier.getDistance(f.mean_x, f.mean_y, content.mean_x, content.mean_y);
-			if(temp_distance < dist){
-				System.out.println("Dist "+item.getContent().toString() + "->" + content.toString()+": "+temp_distance+", min dist: "+dist);
+			System.out.println("Dist "+item.getContent().toString() + "->" + content.toString()+": "+temp_distance+", min dist: "+dist);
+			if(temp_distance < dist && !item.isMarked()){
+				//System.out.println("Dist "+item.getContent().toString() + "->" + content.toString()+": "+temp_distance+", min dist: "+dist);
 				dist = temp_distance;
 				result = item;
 			}

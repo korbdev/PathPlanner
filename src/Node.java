@@ -19,12 +19,28 @@ public class Node<T> {
 	private int rank;
 	private boolean leaf;
 	private T content;
-	
+	private boolean marked;
 	private final int NODE_SIZE_X = 20;
 	private final int NODE_SIZE_Y = 20;
 	
 	private int x;
 	private int y;
+	private int width;
+	private int height;
+	
+	public Node(Node<T> other){
+		parent = other.parent;
+		children = other.children;
+		rank = other.rank;
+		leaf = other.leaf;
+		content = other.content;
+		marked = other.marked;
+		
+		x = other.x;
+		y = other.y;
+		width = other.width;
+		height = other.height;
+	}
 	
 	public Node(T content){
 		parent = null;
@@ -32,10 +48,15 @@ public class Node<T> {
 		leaf = true;
 		this.content = content;
 		rank = 1;
+		marked = false;
 	}
 	
 	public T getContent(){
 		return content;
+	}
+	
+	public int getRank(){
+		return rank;
 	}
 	
 	public Node<T> getParent(){
@@ -48,6 +69,19 @@ public class Node<T> {
 	
 	public boolean isLeaf(){
 		return leaf;
+	}
+	
+	public void mark(T toMark){
+		Node<T> n = find(toMark);
+		n.setMark(true);
+	}
+	
+	public void setMark(boolean mark){
+		marked = mark;
+	}
+	
+	public boolean isMarked(){
+		return marked;
 	}
 	
 	public void insert(T parent, T toInsert){
@@ -75,7 +109,7 @@ public class Node<T> {
 		
 		while(!s.isEmpty()){
 			Node<T> item = s.pop();
-			System.out.println(item.content.toString()+", "+item.rank);
+			//System.out.println(item.content.toString()+", "+item.rank);
 			nodes++;
 			if(item.isLeaf()){
 				leafs++;
@@ -107,7 +141,7 @@ public class Node<T> {
 			String a = item.content.toString();
 			String b = content.toString();
 			System.out.println(a + " compared to "+ b);
-			if(item.content.equals(content)){
+			if(item.content.equals(content) && !item.isMarked()){
 				return item;
 			}
 			
@@ -118,6 +152,27 @@ public class Node<T> {
 			}
 		}
 		return null;
+	}
+	
+	public ArrayList<Node<T>> getLeafs(){
+		ArrayList<Node<T>> leafs = new ArrayList<Node<T>>();
+		Stack<Node<T>> s = new Stack<Node<T>>();
+		s.push(this);
+		
+		while(!s.isEmpty()){
+			Node<T> item = s.pop();
+			if(item.isLeaf() && !item.isMarked()){
+				System.out.println("height "+item.rank);
+				leafs.add(item);
+			}
+			
+			Iterator<Node<T>> it = item.children.iterator();
+			while(it.hasNext()){
+				Node<T> child = it.next();
+				s.push(child);
+			}
+		}
+		return leafs;
 	}
 	
 	public void removeChild(){
@@ -141,10 +196,17 @@ public class Node<T> {
 		int width = initial_walk[0] * NODE_SIZE_X; //leaves
 		int height = initial_walk[2] * NODE_SIZE_Y *2; //height
 		
+		Color leaf = new Color(255, 0, 0);
+		Color c_marked = new Color(0, 0, 255);
+		Color c_unmarked = new Color(0, 0, 0);
+		Color background = new Color(255, 255, 255);
+		
 		int col = 0;
 		int row = 0;
-		int prev_rank = rank;
 
+		int prev_rank = rank;
+		Node<T> prev_parent = this;
+		
 		BufferedImage img = new BufferedImage(width+1, height+1, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = (Graphics2D) img.getGraphics();
 		
@@ -152,37 +214,54 @@ public class Node<T> {
 		g.setFont(font);
 		Queue<Node<T>> q = new LinkedList<Node<T>>();
 		q.offer(this);
-		
+		//g.setColor(background);
+		g.setBackground(background);
+		g.clearRect(0, 0, width, height);
+		g.setColor(c_unmarked);
 		while(!q.isEmpty()){
 			Node<T> item = q.poll();
 			
 			int[] data = item.walk();
-			width = data[0] * NODE_SIZE_X; //leaves
-			height = data[2] * NODE_SIZE_Y; //height
+			item.width = data[0] * NODE_SIZE_X; //leaves
+			item.height = data[2] * NODE_SIZE_Y; //height
 			
-			if(item.rank != prev_rank){
-				col = 0;
-				row= row + 2;
+			if(item.parent != null){
+				if(item.rank != prev_rank){
+					row= row + 2;
+				}
+				if(item.rank != prev_rank || ( prev_parent != null && !prev_parent.equals(item.parent)) ){
+					col = item.parent.x+NODE_SIZE_X/2-item.parent.width/2;
+				}
+				
 			}
 			
 			prev_rank = item.rank;
+			prev_parent = item.parent;
 			
-			item.x = col + (width/2-NODE_SIZE_X/2);
+			item.x = col + (item.width/2-NODE_SIZE_X/2);
 			item.y = NODE_SIZE_Y*row;
 			
+			if(item.isLeaf()){
+				g.setColor(leaf);
+			}
+			if(item.isMarked()){
+				g.setColor(c_marked);
+			}
+			
 			g.drawOval(item.x, item.y, NODE_SIZE_X, NODE_SIZE_Y);
+			g.setColor(c_unmarked);
 			
 			FontMetrics metrics = g.getFontMetrics(font);
 			int w = metrics.stringWidth(item.content.toString())/2;
 			int h = metrics.getHeight()/2;
-			g.drawString(item.content.toString(), col + width/2-w, NODE_SIZE_Y*row-h+metrics.getAscent()+10);
+			g.drawString(item.content.toString(), col + item.width/2-w, NODE_SIZE_Y*row-h+metrics.getAscent()+10);
 			
 			if(item.parent !=  null){
 				g.drawLine(item.x+NODE_SIZE_X/2, item.y, item.parent.x+NODE_SIZE_X/2, item.parent.y+NODE_SIZE_Y);
 			}
 			
-			col += width;
-			
+			col += item.width;
+
 			Iterator<Node<T>> it = item.children.iterator();
 			while(it.hasNext()){
 				Node<T> child = it.next();
@@ -196,5 +275,10 @@ public class Node<T> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public String toString(){
+		return content.toString();
 	}
 }
